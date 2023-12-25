@@ -1,9 +1,11 @@
 import UIKit
 
 final class ViewController: UIViewController {
+    
     // MARK: - private propertys
     private let titleLabel = UILabel()
     private let tableView = UITableView()
+    private var coinJSON: [ModelCoin] = []
 
     // MARK: - life cycle
     override func viewDidLoad() {
@@ -12,9 +14,33 @@ final class ViewController: UIViewController {
         setupConstreints()
         setupUI()
         configTableView()
+        requestCion()
     }
     
     // MARK: - helpers methods
+    
+    // requests
+    private func requestCion() {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        NetworkManager.instance.getAssets { result in
+            activityIndicator.stopAnimating()
+            activityIndicator.removeFromSuperview()
+            switch result {
+            case .success(let coin):
+                DispatchQueue.main.async {
+                    self.coinJSON = coin
+                    self.tableView.reloadData()
+                }
+            case .failure:
+                let alert = UIAlertController(title: "Error", message: "Ошибка запроса", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(alert, animated: true)
+            }
+        }
+    }
     
     // addsubview
     private func addSubviews() {
@@ -58,18 +84,17 @@ final class ViewController: UIViewController {
 // table view
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        coinJSON.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "CastomTableViewCell", for: indexPath) as? CastomTableViewCell {
-            
+            let tmpCoin = coinJSON[indexPath.row]
+            cell.configure(tmpCoin)
             return cell
         }
         return UITableViewCell()
     }
-    
-    
 }
 
 

@@ -1,6 +1,7 @@
 import UIKit
 
 final class CastomTableViewCell: UITableViewCell {
+    
     // MARK: - private propertys
     private let contenerView = UIView()
     private let currencyNameLabel = UILabel()
@@ -21,8 +22,9 @@ final class CastomTableViewCell: UITableViewCell {
     // MARK: - helpers methods
     
     // configure table view cell
-    func configure() {
-        
+    func configure(_ coin: ModelCoin) {
+        currencyNameLabel.text = coin.name
+        currencyLabel.text = String(coin.volume_1day_usd)
     }
     
     // add subview
@@ -63,9 +65,6 @@ final class CastomTableViewCell: UITableViewCell {
         contenerView.layer.cornerRadius = 10
         contenerView.backgroundColor = UIColor(red: 37/255, green: 35/255, blue: 51/255, alpha: 1.0)
         currencyLabel.textColor = .lightGray
-        
-        currencyNameLabel.text = "Bitcoin"
-        currencyLabel.text = "234567253646446"
+
     }
-    
 }
