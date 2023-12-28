@@ -24,7 +24,7 @@ final class CastomTableViewCell: UITableViewCell {
     // configure table view cell
     func configure(_ coin: ModelCoin) {
         currencyNameLabel.text = coin.name
-        currencyLabel.text = String(coin.volume_1day_usd)
+        currencyLabel.text = String(coin.volumeDayUsd)
     }
     
     // add subview

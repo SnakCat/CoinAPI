@@ -48,10 +48,11 @@ final class ViewController: UIViewController {
         view.addSubview(tableView)
     }
     
-    // table view confug
+    // table view config
     private func configTableView() {
         tableView.dataSource = self
         tableView.register(CastomTableViewCell.self, forCellReuseIdentifier: "CastomTableViewCell")
+        tableView.separatorStyle = .none
     }
     
     // constreints
